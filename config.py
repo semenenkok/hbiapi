@@ -18,20 +18,32 @@ def set_conn(instance, db):
         print(str(e))
         raise
 
+def set_sqlite_conn(db_file):
+    try:
+        engine = create_engine('sqlite:///hbiapi.sqlite', isolation_level="AUTOCOMMIT")
+        return engine
+    except Exception as e:
+        print(str(e))
+        raise
+
 def get_db_data(instance, db, sql):
     engine = set_conn(instance, db)
     return pd.DataFrame(engine.connect().execute(text(sql)))
 
+def get_db_sqlite_data(db_file, sql):
+    engine = set_sqlite_conn(db_file)
+    return pd.DataFrame(engine.connect().execute(text(sql)))
 
-def get_db_data2(instance, db, sql):
-    engine = set_conn(instance, db)
-    conn = engine.connect()
-    conn.execution_options='AUTOCOMMIT'
-    return pd.DataFrame(conn.execute(text(sql)))
 
 
 def upsert_db_data(instance, db, sql):
     engine = set_conn(instance, db)
+    conn = engine.connect()
+    conn.execution_options='AUTOCOMMIT'
+    return conn.execute(text(sql))
+
+def upsert_db_sqlite_data(db_file, sql):
+    engine = set_sqlite_conn(db_file)
     conn = engine.connect()
     conn.execution_options='AUTOCOMMIT'
     return conn.execute(text(sql))

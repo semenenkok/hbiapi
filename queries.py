@@ -14,3 +14,7 @@ sql_GetAuditResults = """
 sql_RefAc = """ select BK_SourceMediumCode, startDate, endDate, acRate 
                 from bv.RefAc
             """                    
+
+sql_insert_RefAc = """
+            INSERT INTO bv.RefAc (BK_SourceMediumCode, startDate, endDate, acRate)
+            VALUES ('{0}','{1}','{2}',{3}) """
