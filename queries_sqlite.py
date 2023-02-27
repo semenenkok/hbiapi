@@ -16,43 +16,41 @@ sql_GetAuditResults = """
 sql_RefAc = """ select BK_SourceMediumCode, startDate, endDate, acRate 
                 from RefAc    """                    
 
-sql_insert_RefAc = """
-            INSERT INTO RefAc (BK_SourceMediumCode, startDate, endDate, acRate)
-            VALUES ('{0}','{1}','{2}',{3}) """
-
-sql_insert_RefAc = """
-          UPDATE RefAc
-          SET acRate = {3}
-          WHERE BK_SourceMediumCode = '{0}'
-            AND startDate = '{1}' AND endDate = '{2}'  """
-
-
+sql_upsert_RefAc = """
+            INSERT INTO RefAc(BK_SourceMediumCode, startDate, endDate, acRate) VALUES('{0}','{1}','{2}',{3})
+            ON CONFLICT(BK_SourceMediumCode, startDate, endDate) DO UPDATE SET acRate = {3};
+            """
+sql_delete_RefAc = """
+            DELETE FROM RefAc 
+            WHERE BK_SourceMediumCode = '{0}'
+              and startDate = '{1}'
+              and endDate = '{2}'
+             """
 
 sql_RefVat = """ select startDate, endDate, vatRate 
                 from RefVat """                    
 
-sql_insert_RefVat = """
-            INSERT RefVat (startDate, endDate, vatRate)
-            VALUES  ('{0}','{1}',{}) """
+sql_upsert_RefVat = """
+            INSERT INTO RefVat(startDate, endDate, vatRate) VALUES('{0}','{1}','{2}')
+            ON CONFLICT(startDate, endDate) DO UPDATE SET vatRate = {2};
+            """
 
-sql_update_RefVat = """
-            UPDATE RefVat
-            SET vatRate = {2}
-            WHERE startDate = '{0}' AND endDate = '{1}' """
+sql_delete_RefVat = """
+            DELETE FROM RefVat 
+            WHERE startDate = '{0}'
+              and endDate = '{1}'    """
 
 
 sql_RefVatArm = """ select startDate, endDate, vatRate 
                 from RefVatArm """                    
 
-sql_insert_RefVatArm = """
-            INSERT RefVatArm (startDate, endDate, vatRate)
-            VALUES  ('{0}','{1}',{}) """
+sql_upsert_RefVatArm = """
+            INSERT INTO RefVatArm(startDate, endDate, vatRate) VALUES('{0}','{1}','{2}')
+            ON CONFLICT(startDate, endDate) DO UPDATE SET vatRate = {2};
+            """
 
-sql_update_RefVatArm = """
-            UPDATE RefVatArm
-            SET vatRate = {2}
-            WHERE startDate = '{0}' AND endDate = '{1}' """
-
-
-
+sql_delete_RefVatArm = """
+            DELETE FROM RefVatArm 
+            WHERE startDate = '{0}'
+              and endDate = '{1}'    """
             

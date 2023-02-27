@@ -10,7 +10,7 @@ from config import INSTANCE, DB, get_db_data, upsert_db_data, get_db_sqlite_data
 import json
 import queries
 import queries_sqlite
-from models import RefAc
+from models import RefAc, RefAc_del, RefVat, RefVat_del
 
 app = FastAPI()
 
@@ -36,19 +36,67 @@ def get_user_item(audit_date: date = Query(..., description='Audit date')):
     return Response(df.to_json(orient="records"), media_type="application/json")
     # return Response(df.to_json(orient="records"), media_type="application/json")
 
-
+#######RefAc######
 @app.get('/RefAc', description='select data from dv.RefAc')
 def get_RefAc():
     df = get_db_sqlite_data('hbiapi.sqlite', queries_sqlite.sql_RefAc)
     return Response(df.to_json(orient="records"), media_type="application/json")
 
 
-@app.post('/RefAc', description='insert data into RefAc')
+@app.post('/RefAc', description='upsert data into RefAc')
 def create_RefAc(RefAc: RefAc):
-    sql = queries_sqlite.sql_insert_RefAc.format(RefAc.BK_SourceMediumCode, RefAc.startDate, RefAc.endDate, RefAc.acRate)
+    sql = queries_sqlite.sql_upsert_RefAc.format(RefAc.BK_SourceMediumCode, RefAc.startDate, RefAc.endDate, RefAc.acRate, RefAc.acRate)
     res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
     return res.rowcount 
     #Response(df.to_json(orient="records"), media_type="application/json")
+
+@app.post('/RefAc_del', description='delete data from RefAc')
+def delete_RefAc(RefAc_del: RefAc_del):
+    sql = queries_sqlite.sql_delete_RefAc.format(RefAc_del.BK_SourceMediumCode, RefAc_del.startDate, RefAc_del.endDate)
+    res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
+    return res.rowcount 
+    #Response(df.to_json(orient="records"), media_type="application/json")
+
+#######RefVat######
+@app.get('/RefVat', description='select data from dv.RefVat')
+def get_RefVat():
+    df = get_db_sqlite_data('hbiapi.sqlite', queries_sqlite.sql_RefVat)
+    return Response(df.to_json(orient="records"), media_type="application/json")
+
+@app.post('/RefVat', description='upsert data into RefVat')
+def create_RefVat(RefVat: RefVat):
+    sql = queries_sqlite.sql_upsert_RefVat.format(RefVat.startDate, RefVat.endDate, RefVat.vatRate, RefVat.vatRate)
+    res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
+    return res.rowcount 
+    #Response(df.to_json(orient="records"), media_type="application/json")
+
+@app.post('/RefVat_del', description='delete data from RefVat')
+def delete_RefVat(RefVat_del: RefVat_del):
+    sql = queries_sqlite.sql_delete_RefVat.format(RefVat_del.startDate, RefVat_del.endDate)
+    res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
+    return res.rowcount 
+    #Response(df.to_json(orient="records"), media_type="application/json")
+
+#######RefVatArm######
+@app.get('/RefVatArm', description='select data from dv.RefVatArm')
+def get_RefVatArm():
+    df = get_db_sqlite_data('hbiapi.sqlite', queries_sqlite.sql_RefVatArm)
+    return Response(df.to_json(orient="records"), media_type="application/json")
+
+@app.post('/RefVatArm', description='upsert data into RefVatArm')
+def create_RefVatArm(RefVat: RefVat):
+    sql = queries_sqlite.sql_upsert_RefVatArm.format(RefVat.startDate, RefVat.endDate, RefVat.vatRate, RefVat.vatRate)
+    res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
+    return res.rowcount 
+    #Response(df.to_json(orient="records"), media_type="application/json")
+
+@app.post('/RefVatArm_del', description='delete data from RefVatArm')
+def delete_RefVatArm(RefVat_del: RefVat_del):
+    sql = queries_sqlite.sql_delete_RefVatArm.format(RefVat_del.startDate, RefVat_del.endDate)
+    res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
+    return res.rowcount 
+    #Response(df.to_json(orient="records"), media_type="application/json")
+
 
 # @app.get('/book')
 # def get_book(q: List[str] = Query('defaultbook name', description='Search book')):
