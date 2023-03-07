@@ -43,16 +43,16 @@ def get_RefAc():
     return Response(df.to_json(orient="records"), media_type="application/json")
 
 
-@app.post('/RefAc', description='upsert data into RefAc')
-def create_RefAc(RefAc: RefAc):
-    sql = queries_sqlite.sql_upsert_RefAc.format(RefAc.BK_SourceMediumCode, RefAc.startDate, RefAc.endDate, RefAc.acRate, RefAc.acRate)
+@app.post('/RefAc', description='upsert data into RefAc (upsert - insert news and update existence by id)')
+def upsert_RefAc(RefAc: RefAc):
+    sql = queries_sqlite.sql_upsert_RefAc.format(RefAc.id, RefAc.BK_SourceMediumCode, RefAc.startDate, RefAc.endDate, RefAc.acRate, RefAc.acRate)
     res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
     return res.rowcount 
     #Response(df.to_json(orient="records"), media_type="application/json")
 
-@app.post('/RefAc_del', description='delete data from RefAc')
+@app.post('/RefAc_del', description='delete data from RefAc by id')
 def delete_RefAc(RefAc_del: RefAc_del):
-    sql = queries_sqlite.sql_delete_RefAc.format(RefAc_del.BK_SourceMediumCode, RefAc_del.startDate, RefAc_del.endDate)
+    sql = queries_sqlite.sql_delete_RefAc.format(RefAc_del.id)
     res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
     return res.rowcount 
     #Response(df.to_json(orient="records"), media_type="application/json")
@@ -63,16 +63,16 @@ def get_RefVat():
     df = get_db_sqlite_data('hbiapi.sqlite', queries_sqlite.sql_RefVat)
     return Response(df.to_json(orient="records"), media_type="application/json")
 
-@app.post('/RefVat', description='upsert data into RefVat')
-def create_RefVat(RefVat: RefVat):
-    sql = queries_sqlite.sql_upsert_RefVat.format(RefVat.startDate, RefVat.endDate, RefVat.vatRate, RefVat.vatRate)
+@app.post('/RefVat', description='upsert data into RefVat (upsert - insert news and update existence by id)')
+def upsert_RefVat(RefVat: RefVat):
+    sql = queries_sqlite.sql_upsert_RefVat.format(RefVat.id, RefVat.startDate, RefVat.endDate, RefVat.vatRate, RefVat.vatRate)
     res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
     return res.rowcount 
     #Response(df.to_json(orient="records"), media_type="application/json")
 
-@app.post('/RefVat_del', description='delete data from RefVat')
+@app.post('/RefVat_del', description='delete data from RefVat by id')
 def delete_RefVat(RefVat_del: RefVat_del):
-    sql = queries_sqlite.sql_delete_RefVat.format(RefVat_del.startDate, RefVat_del.endDate)
+    sql = queries_sqlite.sql_delete_RefVat.format(RefVat_del.id)
     res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
     return res.rowcount 
     #Response(df.to_json(orient="records"), media_type="application/json")
@@ -83,16 +83,16 @@ def get_RefVatArm():
     df = get_db_sqlite_data('hbiapi.sqlite', queries_sqlite.sql_RefVatArm)
     return Response(df.to_json(orient="records"), media_type="application/json")
 
-@app.post('/RefVatArm', description='upsert data into RefVatArm')
-def create_RefVatArm(RefVat: RefVat):
-    sql = queries_sqlite.sql_upsert_RefVatArm.format(RefVat.startDate, RefVat.endDate, RefVat.vatRate, RefVat.vatRate)
+@app.post('/RefVatArm', description='upsert data into RefVatArm (upsert - insert news and update existence by id)')
+def upsert_RefVatArm(RefVat: RefVat):
+    sql = queries_sqlite.sql_upsert_RefVatArm.format(RefVat.id, RefVat.startDate, RefVat.endDate, RefVat.vatRate, RefVat.vatRate)
     res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
     return res.rowcount 
     #Response(df.to_json(orient="records"), media_type="application/json")
 
-@app.post('/RefVatArm_del', description='delete data from RefVatArm')
+@app.post('/RefVatArm_del', description='delete data from RefVatArm by id')
 def delete_RefVatArm(RefVat_del: RefVat_del):
-    sql = queries_sqlite.sql_delete_RefVatArm.format(RefVat_del.startDate, RefVat_del.endDate)
+    sql = queries_sqlite.sql_delete_RefVatArm.format(RefVat_del.id)
     res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
     return res.rowcount 
     #Response(df.to_json(orient="records"), media_type="application/json")

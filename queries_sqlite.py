@@ -13,44 +13,40 @@ sql_GetAuditResults = """
 
 
 
-sql_RefAc = """ select BK_SourceMediumCode, startDate, endDate, acRate 
+sql_RefAc = """ select id, BK_SourceMediumCode, startDate, endDate, acRate 
                 from RefAc    """                    
 
 sql_upsert_RefAc = """
-            INSERT INTO RefAc(BK_SourceMediumCode, startDate, endDate, acRate) VALUES('{0}','{1}','{2}',{3})
-            ON CONFLICT(BK_SourceMediumCode, startDate, endDate) DO UPDATE SET acRate = {3};
+            INSERT OR REPLACE INTO RefAc(id, BK_SourceMediumCode, startDate, endDate, acRate)
+            VALUES({0}, '{1}', '{2}', '{3}', {4});
             """
 sql_delete_RefAc = """
-            DELETE FROM RefAc 
-            WHERE BK_SourceMediumCode = '{0}'
-              and startDate = '{1}'
-              and endDate = '{2}'
+            DELETE FROM RefAc WHERE id = {0}
              """
 
-sql_RefVat = """ select startDate, endDate, vatRate 
+
+sql_RefVat = """ select id, startDate, endDate, vatRate 
                 from RefVat """                    
 
 sql_upsert_RefVat = """
-            INSERT INTO RefVat(startDate, endDate, vatRate) VALUES('{0}','{1}','{2}')
-            ON CONFLICT(startDate, endDate) DO UPDATE SET vatRate = {2};
+            INSERT OR REPLACE INTO RefVat(id, startDate, endDate, vatRate)
+            VALUES({0}, '{1}', '{2}', {3});
             """
-
 sql_delete_RefVat = """
             DELETE FROM RefVat 
-            WHERE startDate = '{0}'
-              and endDate = '{1}'    """
+            WHERE id = {0} 
+            """
 
 
-sql_RefVatArm = """ select startDate, endDate, vatRate 
+sql_RefVatArm = """ select id, startDate, endDate, vatRate 
                 from RefVatArm """                    
 
 sql_upsert_RefVatArm = """
-            INSERT INTO RefVatArm(startDate, endDate, vatRate) VALUES('{0}','{1}','{2}')
-            ON CONFLICT(startDate, endDate) DO UPDATE SET vatRate = {2};
+            INSERT OR REPLACE INTO RefVatArm(id, startDate, endDate, vatRate)
+            VALUES({0}, '{1}', '{2}', {3});
             """
-
 sql_delete_RefVatArm = """
             DELETE FROM RefVatArm 
-            WHERE startDate = '{0}'
-              and endDate = '{1}'    """
+            WHERE id = {0}
+            """
             

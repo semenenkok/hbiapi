@@ -1,6 +1,8 @@
 from  pydantic import BaseModel
 from datetime import date
 from typing import List
+from fastapi_users import models
+
 
 class Genres(BaseModel):
     name: str
