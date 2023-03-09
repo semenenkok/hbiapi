@@ -16,10 +16,20 @@ sql_GetAuditResults = """
 sql_RefAc = """ select id, BK_SourceMediumCode, startDate, endDate, acRate 
                 from RefAc    """                    
 
-sql_upsert_RefAc = """
-            INSERT OR REPLACE INTO RefAc(id, BK_SourceMediumCode, startDate, endDate, acRate)
-            VALUES({0}, '{1}', '{2}', '{3}', {4});
+sql_insert_RefAc = """
+            INSERT  INTO RefAc(BK_SourceMediumCode, startDate, endDate, acRate)
+            VALUES({0}, '{1}', '{2}', '{3}');
             """
+
+sql_update_RefAc = """
+            UPDATE RefAc
+            SET BK_SourceMediumCode = '{1}',
+            startDate = '{2}',
+            endDate = '{3}',
+            acRate = '{4}'
+            WHERE id = {0};
+            """
+
 sql_delete_RefAc = """
             DELETE FROM RefAc WHERE id = {0}
              """

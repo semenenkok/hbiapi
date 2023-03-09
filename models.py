@@ -8,7 +8,13 @@ class Audit(BaseModel):
 
 
 class RefAc(BaseModel):
-    id: int[Optional]
+    id: int 
+    BK_SourceMediumCode: str
+    startDate: datetime 
+    endDate: datetime 
+    acRate: float
+
+class RefAc_ins(BaseModel):
     BK_SourceMediumCode: str
     startDate: datetime 
     endDate: datetime 

@@ -1,7 +1,10 @@
 from fastapi.middleware.cors import CORSMiddleware
-from  fastapi import FastAPI, Query, Response
+from fastapi import FastAPI, Query, Response
 from typing import List, Optional
 from datetime import date
+
+import auth.database  as auth 
+
 
 from sqlalchemy import create_engine, text
 import pandas as pd
@@ -10,9 +13,11 @@ from config import INSTANCE, DB, get_db_data, upsert_db_data, get_db_sqlite_data
 import json
 import queries
 import queries_sqlite
-from models import RefAc, RefAc_del, RefVat, RefVat_del
+from models import RefAc, RefAc_ins, RefAc_del, RefVat, RefVat_del
 
 app = FastAPI()
+#auth.create_db_and_tables()
+
 
 origins = ["*"]
 
@@ -43,9 +48,16 @@ def get_RefAc():
     return Response(df.to_json(orient="records"), media_type="application/json")
 
 
-@app.post('/RefAc', description='upsert data into RefAc (upsert - insert news and update existence by id)')
-def upsert_RefAc(RefAc: RefAc):
-    sql = queries_sqlite.sql_upsert_RefAc.format(RefAc.id, RefAc.BK_SourceMediumCode, RefAc.startDate, RefAc.endDate, RefAc.acRate, RefAc.acRate)
+@app.post('/RefAc_ins', description='insert data into RefAc')
+def insert_RefAc(RefAc: RefAc_ins):
+    sql = queries_sqlite.sql_insert_RefAc.format(RefAc.BK_SourceMediumCode, RefAc.startDate, RefAc.endDate, RefAc.acRate, RefAc.acRate)
+    res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
+    return res.rowcount 
+    #Response(df.to_json(orient="records"), media_type="application/json")
+
+@app.post('/RefAc_upd', description='update data into RefAc')
+def update_RefAc(RefAc: RefAc):
+    sql = queries_sqlite.sql_update_RefAc.format(RefAc.id, RefAc.BK_SourceMediumCode, RefAc.startDate, RefAc.endDate, RefAc.acRate, RefAc.acRate)
     res = upsert_db_sqlite_data('hbiapi.sqlite', sql)
     return res.rowcount 
     #Response(df.to_json(orient="records"), media_type="application/json")
