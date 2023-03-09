@@ -1,13 +1,14 @@
 from pydantic import BaseModel
 from datetime import date, datetime
 from typing import Optional
+from sqlalchemy import MetaData, Table, column
 
 class Audit(BaseModel):
     ExecId: int 
 
 
 class RefAc(BaseModel):
-    id: int
+    id: int[Optional]
     BK_SourceMediumCode: str
     startDate: datetime 
     endDate: datetime 
@@ -24,3 +25,5 @@ class RefVat(BaseModel):
 
 class RefVat_del(BaseModel):
     id: int
+
+
