@@ -18,7 +18,7 @@ sql_RefAc = """ select id, BK_SourceMediumCode, startDate, endDate, acRate
 
 sql_insert_RefAc = """
             INSERT  INTO RefAc(BK_SourceMediumCode, startDate, endDate, acRate)
-            VALUES({0}, '{1}', '{2}', '{3}');
+            VALUES('{0}', '{1}', '{2}', '{3}');
             """
 
 sql_update_RefAc = """
