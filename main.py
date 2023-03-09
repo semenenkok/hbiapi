@@ -3,7 +3,7 @@ from fastapi import FastAPI, Query, Response
 from typing import List, Optional
 from datetime import date
 
-import auth.database  as auth 
+#import auth.database  as auth 
 
 
 from sqlalchemy import create_engine, text
